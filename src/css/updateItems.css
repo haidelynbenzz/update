@@ -1,0 +1,49 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td, th {
+    text-align: center;
+    padding: 8px;
+  }
+/* tbody{
+    display:block;
+    overflow:auto;
+    height:500px;
+    width:100%;
+  } */
+  /* thead, tr{
+    display: block;
+  } */
+  
+  tr:nth-child(even) {
+    background-color: #eef1f7;
+  }
+  th{
+      background-color: #333;
+      color: white;
+  }
+  .edit {
+    background-color: #1E90FF; /* Green */
+    border: none;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  .delete {
+    background-color: #DC143C; /* Green */
+    border: none;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
