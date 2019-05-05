@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import '../css/listOrders.css';
-
-const apiURL = 'http://localhost:8080/restsample01/rest/AddFoodItem';
-
+import axios from 'axios';
+import {Card, CardBody, CardTitle, CardSubtitle, CardText} from 'reactstrap';
 class ListOrders extends Component {
 
-
+ 
   render() {
 
 
@@ -47,6 +46,31 @@ class ListOrders extends Component {
               </tr>
             </tbody>
           </table>
+          <Card col-xs-4>
+        <CardBody>
+          <CardTitle>Card title</CardTitle>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+        </CardBody>
+      </Card>
+      <Card col-xs-4>
+        <CardBody>
+          <CardTitle>Card title</CardTitle>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+        </CardBody>
+      </Card>
+      <Card col-xs-4>
+        <CardBody>
+          <CardTitle>Card title</CardTitle>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+        </CardBody>
+      </Card>
+      <Card col-xs-4>
+        <CardBody>
+          <CardTitle>Card title</CardTitle>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+        </CardBody>
+      </Card>
+      
         </div>
         </div> 
       </div>

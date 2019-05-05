@@ -48,29 +48,8 @@ table {
   tr:nth-child(even) {
     background-color: #dddddd;
   }
-.submit{
-    background-color: #35475e;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    float: right;
-    margin-right: 15px;
-}
-.cancel{
-    background-color: #35475e;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    margin-left: 72%;
-}
 input, select{
-    width: 80%;
+    width: 100%;
     padding: 15px 20px;
     margin: 10px 5%;
     box-sizing: border-box;

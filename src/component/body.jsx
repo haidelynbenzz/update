@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../css/body.css';
 import axios from 'axios';
+import {Button} from 'reactstrap';
 
 class Body extends Component {
 
@@ -69,8 +70,8 @@ class Body extends Component {
                                     <option>Out of Stock</option>
                                 </select>
                                 <br />
-                                <button onClick={() => { alert('Food Item Added! Thank You!'); }} type="submit" className="submit" onSubmit={this.handleSubmit}>ADD</button>
-
+                                <Button onClick={() => { alert('Food Item Added! Thank You!'); }} color="primary" type="submit" onSubmit={this.handleSubmit}>ADD</Button>
+                                <Button as="input" color="danger" type="reset" value="Reset">Reset</Button>
                             </form>
                         </div>
                     </div>
