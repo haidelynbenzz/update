@@ -34,8 +34,10 @@ public class OrderController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Order> getOrder(
-			@QueryParam("foodItemName") String foodItemName, 
-			@QueryParam("unitPrice") String unitPrice,
+			@QueryParam("FoodItemName") String FoodItemName, 
+			@QueryParam("UnitPrice") BigDecimal UnitPrice,
+			@QueryParam("Quantity") BigDecimal Quantity,
+			@QueryParam("TotalItemPrice") BigDecimal TotalItemPrice,
 			@QueryParam("CustomerName") String CustomerName, 
 			@QueryParam("Address") String Address,
 			@QueryParam("ContactNumber") String ContactNumber,
@@ -79,12 +81,11 @@ public class OrderController {
 
 		try {
 			orderService.add(order);
-			String result = "Order List saved : " + order.getCustomerName() + " " + order.getAddress() + "  " + order.getContactNumber();
+			String result = "Order List saved : " + order.getAddress() + " " + order.getTotal() + " " + order.getStatus() + "  " + order.getFoodItemName() + " " + order.getContactNumber() + " " + order.getCustomerName()+ " " + order.getUnitPrice()+ " " + order.getQuantity() + " "+order.getTotalItemPrice();
 			return Response.status(201).entity(result).build();
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		}
-
 	}
 	
 	@PUT

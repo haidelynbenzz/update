@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService{
 		if (validate(order)) {
 			orderDao.addOrder(order);
 		} else {
-			throw new IllegalArgumentException("Fields CustomerName, Address and ContactNumber cannot be blank.");
+			throw new IllegalArgumentException("Fields CustomerName cannot be blank.");
 		}
 	}
 	
@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService{
 				orderDao.addOrder(order);
 			}
 		} else {
-			throw new IllegalArgumentException("Fields CustomerName, Address and ContactNumber cannot be blank.");
+			throw new IllegalArgumentException("Fields CustomerName cannot be blank.");
 		}
 	}
 	

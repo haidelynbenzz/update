@@ -10,6 +10,8 @@ public class Order {
 	Long id;
 	private String FoodItemName;
 	private BigDecimal UnitPrice;
+	private BigDecimal Quantity;
+	private BigDecimal TotalItemPrice;
 	private String CustomerName;
 	private String Address;
 	private String ContactNumber;
@@ -21,14 +23,16 @@ public class Order {
 	}
 	
 	//ORDERTBL METHOD
-	public Order(String FoodItemName, BigDecimal UnitPrice, String CustomerName, String Address, String ContactNumber, String Status, BigDecimal Total) {
-		this(null, FoodItemName, UnitPrice, CustomerName, Address, ContactNumber, Status, Total);
+	public Order(String FoodItemName, BigDecimal UnitPrice, BigDecimal Quantity, BigDecimal TotalItemPrice,  String CustomerName, String Address, String ContactNumber, String Status, BigDecimal Total) {
+		this(null, FoodItemName, UnitPrice, Quantity, TotalItemPrice, CustomerName, Address, ContactNumber, Status, Total);
 	}
 	
-	public Order(Long id, String CustomerName, BigDecimal UnitPrice, String Address, String ContactNumber, String Status, String FoodItemName, BigDecimal Total) {
+	public Order(Long id,String FoodItemName, BigDecimal UnitPrice,BigDecimal Quantity, BigDecimal TotalItemPrice, String CustomerName, String Address, String ContactNumber, String Status,  BigDecimal Total) {
 		this.id = id;
 		this.FoodItemName = FoodItemName;
 		this.UnitPrice = UnitPrice;
+		this.Quantity = Quantity;
+		this.TotalItemPrice = TotalItemPrice;
 		this.CustomerName = CustomerName;
 		this.Address = Address;
 		this.ContactNumber = ContactNumber;
@@ -105,6 +109,22 @@ public class Order {
 
 	public void setUnitPrice(BigDecimal unitPrice) {
 		UnitPrice = unitPrice;
+	}
+
+	public BigDecimal getQuantity() {
+		return Quantity;
+	}
+
+	public void setQuantity(BigDecimal quantity) {
+		Quantity = quantity;
+	}
+
+	public BigDecimal getTotalItemPrice() {
+		return TotalItemPrice;
+	}
+
+	public void setTotalItemPrice(BigDecimal totalItemPrice) {
+		TotalItemPrice = totalItemPrice;
 	}
 
 }

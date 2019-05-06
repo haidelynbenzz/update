@@ -5,17 +5,19 @@ import { Table, Button, Input, } from 'reactstrap';
 
 class Create extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             FoodItems: [],
+            value: '',
+            unitPrice: '',
+            quantity: '',
+            items: '',
             customerName : '',
             address: '',
             contactNumber: '',
             status: '',
-            validation: '',
-            Items:'',
             isHidden: false,
         };
 
@@ -29,7 +31,8 @@ class Create extends Component {
 
     handleChange = e => {
         this.setState({
-            [e.target.name] : e.target.value
+            [e.target.name] : e.target.value,
+            value: e.target.value
         });
     }
 
@@ -38,14 +41,16 @@ class Create extends Component {
         e.preventDefault();
 
         const details = {
+            items: this.state.items,
+            // unitPrice: this.state.unitPrice,
             customerName: this.state.customerName,
             address: this.state.address,
             contactNumber: this.state.contactNumber,
             status: this.state.status,
-            option: this.state.option,
             quantity: this.state.quantity,
         }
 
+        //console.log(this.state.items);
         console.log("details");
         console.log(details);
 
@@ -65,6 +70,13 @@ class Create extends Component {
             })
     }
     //console.log({this.state.validation});
+
+    // getTotal(){
+    //     this.state.FoodItems.map((FoodItem) => {
+    //         return (
+    //             <td key={FoodItem}>{this.state.quantity * FoodItem.unitPrice}</td>
+    //     )})
+    // }
 
     render() {
 
@@ -104,7 +116,8 @@ class Create extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            <td ><Input type="select" name="option" value={this.state.Items} onChange={(e) => this.setState({Items: e.target.value, validation: e.target.value === ""})}>
+                                            <td ><Input type="select" value={this.state.value} name="items" 
+                                             onChange={this.handleChange}>
                                             {this.state.FoodItems.map((FoodItem) => {
                                                     return (
                                                         <option>{FoodItem.foodItemName} (Php: {FoodItem.unitPrice})</option>
@@ -120,20 +133,23 @@ class Create extends Component {
                                     <thead>
                                         <th>Quantity</th>
                                         <th>Ordered Items</th>
+                                        <th>Total Price</th>
                                     </thead>
                                     <tbody>
                                         <tr>
                                         <td>{this.state.quantity}</td>
-                                        <td>{this.state.validation}</td>
+                                        <td>{this.state.items}</td>   
+                                        {/* <td>{this.state.quantity * FoodItem.unitPrice}</td> */}
+                                        {this.state.FoodItems.map((FoodItem) => {
+                                                    return (
+                                                        <td>{this.state.quantity * FoodItem.unitPrice}</td>
+                                                )})
+                                            }
                                         
-                                        </tr>
-                                        <tr>
-                                        <td>Quantity</td>
-                                        <td>Food Name</td>
-                                        </tr>
-                                        
-                                       
-                                        
+                                                        {/* <td>{this.getTotal}</td>    */}
+                                               
+                                                             
+                                        </tr>       
                                     </tbody>
                                 </Table>
                             </div>
@@ -143,6 +159,8 @@ class Create extends Component {
                 </div>
             </div>
         );
+
+          
     }
 }
 
