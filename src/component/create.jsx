@@ -10,55 +10,17 @@ class Create extends Component {
 
         this.state = {
             FoodItems: [],
-            value: '',
+            foodItemName: '',
             unitPrice: '',
             quantity: '',
-            items: '',
-            customerName : '',
+            orderItemName: '',
+            total: 0,
+            customerName: '',
             address: '',
             contactNumber: '',
             status: '',
             isHidden: false,
         };
-
-    }
-
-    toggleHidden(){
-        this.setState({
-            isHidden: !this.state.isHidden
-        })
-    }
-
-    handleChange = e => {
-        this.setState({
-            [e.target.name] : e.target.value,
-            value: e.target.value
-        });
-    }
-
-    //SUBMIT FUNCTION
-    handleSubmit = e => {
-        e.preventDefault();
-
-        const details = {
-            items: this.state.items,
-            // unitPrice: this.state.unitPrice,
-            customerName: this.state.customerName,
-            address: this.state.address,
-            contactNumber: this.state.contactNumber,
-            status: this.state.status,
-            quantity: this.state.quantity,
-        }
-
-        //console.log(this.state.items);
-        console.log("details");
-        console.log(details);
-
-        axios.post('http://localhost:8080/restsample01/rest/AddOrder', details)
-            .then(res => {
-                console.log(res);
-                //console.log(res.data);
-            })
 
     }
 
@@ -69,21 +31,80 @@ class Create extends Component {
                 this.setState({ FoodItems });
             })
     }
-    //console.log({this.state.validation});
 
-    // getTotal(){
-    //     this.state.FoodItems.map((FoodItem) => {
-    //         return (
-    //             <td key={FoodItem}>{this.state.quantity * FoodItem.unitPrice}</td>
-    //     )})
-    // }
+    toggleHidden() {
+        this.setState({
+            isHidden: !this.state.isHidden
+        })
+    }
+
+    handleChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    //SUBMIT FUNCTION
+    handleSubmit = e => {
+        e.preventDefault();
+
+        const AddOrder = {
+            // items: this.state.items,
+            customerName: this.state.customerName,
+            address: this.state.address,
+            contactNumber: this.state.contactNumber,
+            status: this.state.status,
+
+        }
+
+        const OrderItem = {
+            quantity: this.state.quantity,
+            orderItemName: this.state.orderItemName,
+        }
+
+        const AddFoodItem = {
+            foodItemName: this.state.foodItemName,
+            unitPrice: this.state.unitPrice,
+        }
+        //console.log(this.state.items);
+        console.log("details");
+        console.log(AddOrder);
+        console.log(OrderItem);
+        console.log(AddFoodItem);
+
+        axios.post('http://localhost:8080/restsample01/rest/AddFoodItem', AddFoodItem)
+            .then(res => {
+                console.log(res);
+                //console.log(res.data);
+            })
+
+        axios.post('http://localhost:8080/restsample01/rest/OrderItem', OrderItem)
+            .then(res => {
+                console.log(res);
+            })
+
+        axios.post('http://localhost:8080/restsample01/rest/AddOrder', AddOrder)
+            .then(res => {
+                console.log(res);
+            })
+
+    }
+
+    getTotal(){
+        //this.FoodItems.unitPrice * this.state.quantity
+        this.state.FoodItems.map((FoodItem) => {
+            return (
+                FoodItem.unitPrice * this.state.quantity
+            )
+        })
+        
+    }
 
     render() {
 
         var shown = {
-			display: this.state.isHidden ? "block" : "none"
-		};
-
+            display: this.state.isHidden ? "block" : "none"
+        };
         return (
 
             <div>
@@ -94,10 +115,11 @@ class Create extends Component {
                         <div className="widget">
                             <div className="title">Create Order</div>
                             <form onSubmit={this.handleSubmit}>
-                                <input name="customerName" placeholder="Customer Name" onChange={this.handleChange}/>
-                                <input name="address" placeholder="Address" onChange={this.handleChange}/>
-                                <input name="contactNumber" placeholder="Contact Number" onChange={this.handleChange}/>
-                                <select name="status" id="status" onChange={this.handleChange}>
+                                <input className="i" name="customerName" placeholder="Customer Name" onChange={this.handleChange} />
+                                <input className="i" name="address" placeholder="Address" onChange={this.handleChange} />
+                                <input className="i" name="contactNumber" placeholder="Contact Number" onChange={this.handleChange} />
+                                <input className="i" name="orderItemName" placeholder="e.g. Order#" onChange={this.handleChange} />
+                                <select className="i" name="status" id="status" onChange={this.handleChange}>
                                     <option disabled selected>Choose</option>
                                     <option>Recieved</option>
                                     <option>Kitchen</option>
@@ -106,53 +128,49 @@ class Create extends Component {
                                     <option>Cancelled</option>
                                 </select>
                                 <Button as="input" color="info" onClick={this.toggleHidden.bind(this)}>ORDER NOW</Button>
-                            <div style={shown}>
-                                <Table striped bordered hover>
-                                    <thead>
-                                        <tr>
-                                            <th>Food Name</th>
-                                            <th>Quantity</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                            <td ><Input type="select" value={this.state.value} name="items" 
-                                             onChange={this.handleChange}>
-                                            {this.state.FoodItems.map((FoodItem) => {
-                                                    return (
-                                                        <option>{FoodItem.foodItemName} (Php: {FoodItem.unitPrice})</option>
-                                                )})
-                                            }</Input></td>
-                                            
+                                <div style={shown}>
+                                    <Table striped bordered hover>
+                                        <thead>
+                                            <tr>
+                                                <th>Food Name</th>
+                                                <th>Quantity</th>
+                                                <th>MODIFY</th>
+                                            </tr>
+                                        </thead>
                                         <td><Input type="number" min="1" max="20" name="quantity" onChange={this.handleChange}></Input></td>
+                                        <td><Input type="select" name="foodItemName"
+                                            onChange={this.handleChange}>
+                                            {this.state.FoodItems.map((FoodItem) => {
+                                                return (
+                                                    <option>{FoodItem.foodItemName} (Php: {FoodItem.unitPrice})</option>
+                                                )
+                                            })
+                                            }</Input></td>
                                         <td><Button color="primary" onSubmit={this.handleSubmit}>ADD</Button></td>
-                                    </tbody>
-                                </Table>
-                                
-                                <Table striped bordered hover>
-                                    <thead>
-                                        <th>Quantity</th>
-                                        <th>Ordered Items</th>
-                                        <th>Total Price</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                        <td>{this.state.quantity}</td>
-                                        <td>{this.state.items}</td>   
-                                        {/* <td>{this.state.quantity * FoodItem.unitPrice}</td> */}
-                                        {this.state.FoodItems.map((FoodItem) => {
-                                                    return (
-                                                        <td>{this.state.quantity * FoodItem.unitPrice}</td>
-                                                )})
-                                            }
-                                        
-                                                        {/* <td>{this.getTotal}</td>    */}
-                                               
-                                                             
-                                        </tr>       
-                                    </tbody>
-                                </Table>
-                            </div>
+                                    </Table>
+                                    <div className="TableForDisplayTotal">
+                                        <Table striped bordered hover>
+                                            <thead>
+                                                <th>Quantity</th>
+                                                <th>Ordered Items</th>
+                                                <th>Total Price</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{this.state.quantity}</td>
+                                                    <td>{this.state.foodItemName}</td>
+                                                    {/* {this.state.FoodItems.map((FoodItem) => {
+                                                        return (
+                                                            <td key={FoodItem.id}>{this.state.quantity * FoodItem.unitPrice}</td>
+                                                        )
+                                                    })
+                                                    } */}
+                                                    <td>{this.getTotal()}</td>
+                                                </tr>
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -160,7 +178,7 @@ class Create extends Component {
             </div>
         );
 
-          
+
     }
 }
 

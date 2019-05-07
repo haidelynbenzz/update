@@ -26,7 +26,6 @@ class App extends Component {
               <span>FasterFood ®</span>
             </div>
           </header>
-
           <body>
             <div className="side-nav">
 

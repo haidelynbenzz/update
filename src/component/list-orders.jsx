@@ -24,14 +24,6 @@ class ListOrders extends Component {
       })
   }
 
-//   componentDidMount() {
-//     axios.get('http://localhost:8080/restsample01/rest/AddFoodItem')
-//         .then(res => {
-//             const FoodItems = res.data;
-//             this.setState({ FoodItems });
-//         })
-// }
-
   toggleSelectOrder() {
     this.setState({
       openSelectOrderModal: !this.state.openSelectOrderModal
@@ -49,8 +41,8 @@ class ListOrders extends Component {
 			    </div>
           <div className="widget">
             <div className="title">Listed Orders</div>
-
-            <Table striped bordered hover>
+            <div className="scrollable1">
+            <table>
 
               <thead>
 
@@ -68,7 +60,7 @@ class ListOrders extends Component {
 
                 </tr>
                 {
-                  this.state.Orders.map((Order) => {
+                  this.state.Orders.map((Order, key) => {
                     return (
                       <tr className="add-food-row">
                         <td className="add-food-cell">{Order.id}</td>
@@ -76,35 +68,21 @@ class ListOrders extends Component {
                         <td className="add-food-cell">{Order.address}</td>
                         <td className="add-food-cell">{Order.contactNumber}</td>
                         <td className="add-food-cell">
-                          <Button color="outline-success" onClick={this.toggleSelectOrder.bind(this)}>ORDER ITEMS</Button>
+                          {Order.foodItemName}<br />
+                        Order Name: {Order.orderItemName}<br />
+                        Qty:{Order.quantity}<br />
+                        TOTAL
                         </td>
-                          <Modal isOpen={this.state.openSelectOrderModal} toggle={this.toggleSelectOrder.bind(this)}>
-                            <ModalHeader toggle={this.toggleSelectOrder.bind(this)}>ORDERED ITEMS LIST</ModalHeader>
-                            <ModalBody>
-                              <tr>
-                                <th >FOOD NAME</th>
-                                <th>PRICE</th>
-                                <th>TOTAL</th>
-                              </tr>
-                                <tr>
-                                  <td className="add-food-cell">{Order.foodItemName}</td>
-                                  <td className="add-food-cell">{Order.unitPrice}</td>
-                                  <td className="add-food-cell">TOTAL</td>
-                                </tr>
-                            </ModalBody>
-                            <ModalFooter>
-                              <Button color="secondary" onClick={this.toggleSelectOrder.bind(this)}>Cancel</Button>
-                            </ModalFooter>
-                          </Modal>
                         <td className="add-food-cell">{Order.status}</td>
                         <td className="add-food-cell">TOTAL</td>
                       </tr>
                     )
                   })
                 }
-                
+
               </tbody>
-            </Table>
+            </table>
+            </div>
           </div>
         </div>
       </div>
@@ -112,3 +90,26 @@ class ListOrders extends Component {
   }
 }
 export default ListOrders;
+{/* <Button color="outline-success" onClick={this.toggleSelectOrder.bind(this)}>ORDER ITEMS</Button>
+                          <Modal isOpen={this.state.openSelectOrderModal} toggle={this.toggleSelectOrder.bind(this)}>
+                            <ModalHeader toggle={this.toggleSelectOrder.bind(this)}>ORDERED ITEMS LIST</ModalHeader>
+                            <ModalBody>
+                              <table>
+                              <tr>
+                                <th>FOOD NAME</th>
+                                <th>PRICE</th>
+                                <th>QUANTITY</th>
+                                <th>TOTAL</th>
+                              </tr>
+                              <tr>
+                                <td>{Order.foodItemName}</td>  
+                                <td>{Order.unitPrice}</td>
+                                <td>{Order.Quantity}</td>
+                                <td>{Order.Total}</td>
+                              </tr>         
+                              </table>           
+                            </ModalBody>
+                            <ModalFooter>
+                              <Button color="secondary" onClick={this.toggleSelectOrder.bind(this)}>Cancel</Button>
+                            </ModalFooter>
+                          </Modal> */}

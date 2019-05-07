@@ -101,17 +101,19 @@ class UpdateItems extends Component {
 
                     <table>
                         <thead>
+                            <tr>
                             <th className="add-table-cell">ID</th>
                             <th className="add-table-cell">FOOD ITEM NAME</th>
                             <th className="add-table-cell">UNIT PRICE</th>
                             <th className="add-table-cell">STOCK STATUS</th>
                             <th className="add-table-cell">MODIFY</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {
                                 this.state.FoodItems.map((FoodItem) => {
                                     return (
-                                        <tr className="add-food-row">
+                                        <tr className="add-food-row" key={FoodItem.id}>
                                             <td className="add-food-cell">{FoodItem.id}</td>
                                             <td className="add-food-cell">{FoodItem.foodItemName}</td>
                                             <td className="add-food-cell">{FoodItem.unitPrice}</td>

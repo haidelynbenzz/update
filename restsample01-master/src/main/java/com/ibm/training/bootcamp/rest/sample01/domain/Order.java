@@ -10,34 +10,36 @@ public class Order {
 	Long id;
 	private String FoodItemName;
 	private BigDecimal UnitPrice;
-	private BigDecimal Quantity;
-	private BigDecimal TotalItemPrice;
 	private String CustomerName;
 	private String Address;
 	private String ContactNumber;
 	private String Status;
 	private BigDecimal Total;
+	private String OrderItemName;
+	private BigDecimal Quantity;
+	private BigDecimal TotalItemPrice;
 	
 	public Order() {
 		
 	}
 	
 	//ORDERTBL METHOD
-	public Order(String FoodItemName, BigDecimal UnitPrice, BigDecimal Quantity, BigDecimal TotalItemPrice,  String CustomerName, String Address, String ContactNumber, String Status, BigDecimal Total) {
-		this(null, FoodItemName, UnitPrice, Quantity, TotalItemPrice, CustomerName, Address, ContactNumber, Status, Total);
+	public Order(String FoodItemName, BigDecimal UnitPrice, String CustomerName, String Address, String ContactNumber, String Status, BigDecimal Total, String OrderItemName, BigDecimal Quantity, BigDecimal TotalItemPrice) {
+		this(null, FoodItemName, UnitPrice, CustomerName, Address, ContactNumber, Status, Total, OrderItemName, Quantity, TotalItemPrice);
 	}
 	
-	public Order(Long id,String FoodItemName, BigDecimal UnitPrice,BigDecimal Quantity, BigDecimal TotalItemPrice, String CustomerName, String Address, String ContactNumber, String Status,  BigDecimal Total) {
+	public Order(Long id,String FoodItemName, BigDecimal UnitPrice, String CustomerName, String Address, String ContactNumber, String Status,  BigDecimal Total,String OrderItemName, BigDecimal Quantity, BigDecimal TotalItemPrice) {
 		this.id = id;
 		this.FoodItemName = FoodItemName;
 		this.UnitPrice = UnitPrice;
-		this.Quantity = Quantity;
-		this.TotalItemPrice = TotalItemPrice;
 		this.CustomerName = CustomerName;
 		this.Address = Address;
 		this.ContactNumber = ContactNumber;
 		this.Status = Status;
 		this.Total = Total;
+		this.OrderItemName = OrderItemName;
+		this.Quantity = Quantity;
+		this.TotalItemPrice = TotalItemPrice;
 	}
 	
 
@@ -125,6 +127,14 @@ public class Order {
 
 	public void setTotalItemPrice(BigDecimal totalItemPrice) {
 		TotalItemPrice = totalItemPrice;
+	}
+
+	public String getOrderItemName() {
+		return OrderItemName;
+	}
+
+	public void setOrderItemName(String orderItemName) {
+		OrderItemName = orderItemName;
 	}
 
 }

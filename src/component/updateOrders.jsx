@@ -12,7 +12,14 @@ class UpdateOrders extends Component {
 
         this.state = {
             Orders: [],
-            editSelectOrderData: false,
+            editOrderItemData: {
+                id: '',
+                customerName: '',
+                address: '',
+                contactNumber: '',
+                status: '',
+            },
+            editOrderItemData: false,
         };
 
     }
@@ -25,6 +32,27 @@ class UpdateOrders extends Component {
             })
     }
 
+    updateOrderItem() {
+        let { customerName, address, contactNumber, status } = this.state.editOrderItemData;
+
+        axios.put("http://localhost:8080/restsample01/rest/AddOrder/" + this.state.editOrderItemData.id, {
+            customerName, address, contactNumber, status
+        }).then((res) => {
+            console.log(res.data)
+            //this._refreshFoods();
+            this.setState({
+                openSelectOrderModal: false, editOrderItemData: { id: '', customerName: '', address: '', contactNumber: '', status: '' }
+            })
+
+        });
+    }
+    editOrderItem(id, customerName, address, contactNumber, status) {
+        this.setState({
+            editOrderItemData: { id, customerName, address, contactNumber, status }, openSelectOrderModal: !this.state.openSelectOrderModal
+        });
+    }
+
+    //DELETE REQUEST
     handleDelete(id) {
         axios.delete('http://localhost:8080/restsample01/rest/AddOrder/' + id)
             .then(res =>
@@ -46,11 +74,11 @@ class UpdateOrders extends Component {
         });
     }
 
-    toggleSelectOrderItems() {
-        this.setState({
-            openSelectOrderItemModal: !this.state.openSelectOrderItemModal
-        });
-    }
+    // toggleSelectOrderItems() {
+    //     this.setState({
+    //         openSelectOrderItemModal: !this.state.openSelectOrderItemModal
+    //     });
+    // }
 
     render() {
         return (
@@ -58,73 +86,129 @@ class UpdateOrders extends Component {
                 <div className="main-content">
                     <div className="title">
                         DASHBOARD
-			</div>
+			        </div>
+                    <div className="scrollable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th className="add-table-cell">ORDER ID</th>
+                                    <th className="add-table-cell">CUSTOMER NAME</th>
+                                    <th className="add-table-cell">ADDRESS</th>
+                                    <th className="add-table-cell">CONTACT NUMBER</th>
+                                    <th className="add-table-cell">ORDER ITEMS</th>
+                                    <th className="add-table-cell">STATUS</th>
+                                    <th className="add-table-cell">TOTAL</th>
+                                    <th className="add-table-cell">MODIFY</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                    <table>
-                        <thead>
-                            <th className="add-table-cell">ORDER ID</th>
-                            <th className="add-table-cell">CUSTOMER NAME</th>
-                            <th className="add-table-cell">ADDRESS</th>
-                            <th className="add-table-cell">CONTACT NUMBER</th>
-                            <th className="add-table-cell">ORDER ITEMS</th>
-                            <th className="add-table-cell">STATUS</th>
-                            <th className="add-table-cell">TOTAL</th>
-                            <th className="add-table-cell">MODIFY</th>
-                        </thead>
-                        <tbody>
+                                {
+                                    this.state.Orders.map((Order) => {
+                                        return (
+                                            <tr className="add-food-row" key={Order.id}>
+                                                <td className="add-food-cell" key={Order.id1}>{Order.id}</td>
+                                                <td className="add-food-cell">{Order.customerName}</td>
+                                                <td className="add-food-cell">{Order.address}</td>
+                                                <td className="add-food-cell">{Order.contactNumber}</td>
+                                                <td className="add-food-cell">
+                                                    {/* <Button color="outline-success" onClick={this.toggleSelectOrderItems.bind(this)}>UPDATE ORDER LIST</Button> */}
 
-                            {
-                                this.state.Orders.map((Order) => {
-                                    return (
-                                        <tr className="add-food-row">
-                                            <td className="add-food-cell">{Order.id}</td>
-                                            <td className="add-food-cell">{Order.customerName}</td>
-                                            <td className="add-food-cell">{Order.address}</td>
-                                            <td className="add-food-cell">{Order.contactNumber}</td>
-                                            <td className="add-food-cell">
-                                                <Button color="outline-success" onClick={this.toggleSelectOrderItems.bind(this)}>UPDATE ORDER LIST</Button>
-                                            <br /></td>
-                                            
-                                            <td className="add-food-cell">{Order.status}</td>
-                                            <td className="add-food-cell">TOTAL</td>
-                                            <td className="add-food-cell">
-                                                <button className="edit" type="button" onClick={this.toggleSelectOrder.bind(this)}>EDIT</button>
-                                                <button className="delete" type="button" onClick={() => this.handleDelete(Order.id)}>DELETE</button>
+                                                    {Order.foodItemName}<br />
+                                                    Price: {Order.unitPrice}<br />
+                                                    Qty: {Order.quantity}<br />
+                                                    TOTAL
                                             </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                        <Modal isOpen={this.state.openSelectOrderModal} toggle={this.toggleSelectOrder.bind(this)}>
-                            <ModalHeader toggle={this.toggleSelectOrder.bind(this)}>EDIT ORDER ITEMS</ModalHeader>
-                            <ModalBody>
-                                
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="primary" >UPDATE</Button>{' '}
-                                <Button color="secondary" onClick={this.toggleSelectOrder.bind(this)}>Cancel</Button>
-                            </ModalFooter>
-                        </Modal>
 
-                        {/* FOR ORDER ITEM EDIT MODAL */}
-                        <Modal isOpen={this.state.openSelectOrderItemModal} toggle={this.toggleSelectOrderItems.bind(this)}>
-                            <ModalHeader toggle={this.toggleSelectOrderItems.bind(this)}>EDIT SELECTED ORDER ITEMS</ModalHeader>
-                            <ModalBody>
-                                
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="primary" >UPDATE</Button>{' '}
-                                <Button color="secondary" onClick={this.toggleSelectOrderItems.bind(this)}>Cancel</Button>
-                            </ModalFooter>
-                        </Modal>
-                    </table>
+                                                <td className="add-food-cell">{Order.status}</td>
+                                                <td className="add-food-cell">TOTAL</td>
+                                                <td className="add-food-cell">
+                                                    <button className="edit" type="button" onClick={this.editOrderItem.bind(this, Order.id, Order.customerName, Order.address, Order.contactNumber, Order.status)}>EDIT</button>
+                                                    <button className="delete" type="button" onClick={() => this.handleDelete(Order.id)}>DELETE</button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                            <Modal isOpen={this.state.openSelectOrderModal} toggle={this.toggleSelectOrder.bind(this)}>
+                                <ModalHeader toggle={this.toggleSelectOrder.bind(this)}>EDIT ORDER ITEMS</ModalHeader>
+                                <ModalBody>
+                                    <FormGroup>
+                                        <Label for="customerName">Customer Name</Label>
+                                        <Input id="customerName" value={this.state.editOrderItemData.customerName} onChange={(e) => {
+                                            let { editOrderItemData } = this.state;
 
+                                            editOrderItemData.customerName = e.target.value;
+
+                                            this.setState({ editOrderItemData });
+                                        }} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="address">Address</Label>
+                                        <Input id="address" value={this.state.editOrderItemData.address} onChange={(e) => {
+                                            let { editOrderItemData } = this.state;
+
+                                            editOrderItemData.address = e.target.value;
+
+                                            this.setState({ editOrderItemData });
+                                        }} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="contactNumber">Contact Name</Label>
+                                        <Input id="contactNumber" value={this.state.editOrderItemData.contactNumber} onChange={(e) => {
+                                            let { editOrderItemData } = this.state;
+
+                                            editOrderItemData.contactNumber = e.target.value;
+
+                                            this.setState({ editOrderItemData });
+                                        }} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label>Update</Label>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="status">Status</Label>
+                                        <Input type="select" id="status" value={this.state.editOrderItemData.status} onChange={(e) => {
+                                            let { editOrderItemData } = this.state;
+
+                                            editOrderItemData.status = e.target.value;
+
+                                            this.setState({ editOrderItemData });
+                                        }} >
+                                            <option disabled selected>Choose</option>
+                                            <option>Recieved</option>
+                                            <option>Kitchen</option>
+                                            <option>In Transit</option>
+                                            <option>Delivered</option>
+                                            <option>Cancelled</option>
+                                        </Input>
+                                    </FormGroup>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="primary" onClick={this.updateOrderItem.bind(this)}>UPDATE</Button>{' '}
+                                    <Button color="secondary" onClick={this.toggleSelectOrder.bind(this)}>Cancel</Button>
+                                </ModalFooter>
+                            </Modal>
+
+                            {/* FOR ORDER ITEM EDIT MODAL */}
+                            {/* <Modal isOpen={this.state.openSelectOrderItemModal} toggle={this.toggleSelectOrderItems.bind(this)}>
+                                <ModalHeader toggle={this.toggleSelectOrderItems.bind(this)}>EDIT SELECTED ORDER ITEMS</ModalHeader>
+                                <ModalBody>
+                                    
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="primary" >UPDATE</Button>{' '}
+                                    <Button color="secondary" onClick={this.toggleSelectOrderItems.bind(this)}>Cancel</Button>
+                                </ModalFooter>
+                            </Modal> */}
+                        </table>
+                    </div>
                 </div>
-                </div>
-                )
-        
-            }
-        }
-        
+            </div>
+        )
+
+    }
+}
+
 export default UpdateOrders;

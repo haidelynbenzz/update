@@ -1,10 +1,15 @@
-table {
+.scrollable1 {
+  height: 132%;
+  overflow-y: scroll;
+
+}table {
   border-collapse: collapse;
   width: 100%;
+  overflow: auto;
 }
 td, th {
   text-align: center;
-  padding: 8px;
+  padding: 5px;
 }
 
 tr:nth-child(even) {

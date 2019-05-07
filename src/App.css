@@ -53,10 +53,10 @@ p{
 }
 
 /*BODY*/
-body {
+/* body {
 	margin: 0;
 	padding: 0;
-}
+} */
 .side-nav {
 	position: fixed;
     width: 20%;

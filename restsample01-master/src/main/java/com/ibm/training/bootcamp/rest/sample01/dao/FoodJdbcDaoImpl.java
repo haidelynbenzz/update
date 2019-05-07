@@ -242,11 +242,11 @@ private static FoodJdbcDaoImpl INSTANCE;
 
 		private void insertInitOrder() {
 
-			addOrder(new Order("Pasta", null,null, null, "Maria Clara","California","022-011","Received", null));
-			addOrder(new Order("Pizza Pie", null, null, null, "Lauren Cimorelli","LA","033-055","Kitchen",null));
-			addOrder(new Order("Buffalo Wings", null, null, null, "Steve Parker","New York","043-075","In Transit",null));
-			addOrder(new Order("Chicken", null, null, null, "Robert Downey Jr.","LA","013-955","Delivered",null));
-			addOrder(new Order("Baby Ribs", null, null, null, "Michael Bobley","Canada","053-075","Cancelled",null));
+			addOrder(new Order(null,null, "Maria Clara","California","022-011","Received", null, "Order1", null, null));
+			addOrder(new Order(null, null, "Lauren Cimorelli","LA","033-055","Kitchen",null,"Order1", null, null));
+			addOrder(new Order(null, null, "Steve Parker","New York","043-075","In Transit",null,"Order1", null, null));
+			addOrder(new Order(null, null, "Robert Downey Jr.","LA","013-955","Delivered",null,"Order1", null, null));
+			addOrder(new Order(null, null, "Michael Bobley","Canada","053-075","Cancelled",null,"Order1", null, null));
 		}
 		
 		@Override
@@ -261,15 +261,13 @@ private static FoodJdbcDaoImpl INSTANCE;
 			Order order = null;
 
 			if (id != null) {
-				String sqlOrder = 
-						"SELECT f.FoodItemName, f.UnitPrice, o.id, o.CustomerName, o.Address, o.ContactNumber, o.Status, o.Total, oItem.Quantity, oItem.TotalItemPrice "
+				String sqlOrder = "SELECT f.FoodItemName, f.UnitPrice, o.id, o.CustomerName, o.Address, o.ContactNumber, o.Status, o.Total, oi.OrderItemName, oi.Quantity, oi.TotalItemPrice "
 						+ "FROM FoodItemTbl f "
 						+ "INNER JOIN OrderTbl o "
 						+ "ON f.id = o.id "
-						+ "INNER JOIN OrderItemTbl oItem "
-						+ "ON o.id = oItem.id "
+						+ "INNER JOIN OrderItemTbl oi "
+						+ "ON o.id = oi.id "
 						+ "WHERE o.id = ? ";
-						
 				try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sqlOrder)) {
 
 					ps.setInt(1, id.intValue());
@@ -280,13 +278,14 @@ private static FoodJdbcDaoImpl INSTANCE;
 								results.getInt("id")), 
 								results.getString("FoodItemName"),
 								results.getBigDecimal("UnitPrice"),
-								results.getBigDecimal("Quantity"),
-								results.getBigDecimal("TotalItemPrice"),
 								results.getString("CustomerName"),
 								results.getString("Address"), 
 								results.getString("ContactNumber"),
 								results.getString("Status"),
-								results.getBigDecimal("Total"));
+								results.getBigDecimal("Total"),
+								results.getString("OrderItemName"),
+								results.getBigDecimal("Quantity"),
+								results.getBigDecimal("TotalItemPrice"));
 					}
 
 				} catch (SQLException e) {
@@ -303,12 +302,12 @@ private static FoodJdbcDaoImpl INSTANCE;
 			List<Order> orders = new ArrayList<>();
 
 			String sqlOrder = 
-					"SELECT f.FoodItemName, f.UnitPrice, o.id, o.CustomerName, o.Address, o.ContactNumber, o.Status, o.Total, oItem.Quantity, oItem.TotalItemPrice "
+					"SELECT f.FoodItemName, f.UnitPrice, o.id, o.CustomerName, o.Address, o.ContactNumber, o.Status, o.Total, oi.OrderItemName, oi.Quantity, oi.TotalItemPrice "
 					+ "FROM FoodItemTbl f "
 					+ "INNER JOIN OrderTbl o "
 					+ "ON f.id = o.id "
-					+ "INNER JOIN OrderItemTbl oItem "
-					+ "ON o.id = oItem.id "
+					+ "INNER JOIN OrderItemTbl oi "
+					+ "ON o.id = oi.id "
 					+ "WHERE o.CustomerName LIKE ?";
 
 			try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sqlOrder)) {
@@ -322,13 +321,14 @@ private static FoodJdbcDaoImpl INSTANCE;
 							results.getInt("id")), 
 							results.getString("FoodItemName"),
 							results.getBigDecimal("UnitPrice"),
-							results.getBigDecimal("Quantity"),
-							results.getBigDecimal("TotalItemPrice"),
 							results.getString("CustomerName"),
 							results.getString("Address"), 
 							results.getString("ContactNumber"),
 							results.getString("Status"),
-							results.getBigDecimal("Total"));
+							results.getBigDecimal("Total"),
+							results.getString("OrderItemName"),
+							results.getBigDecimal("Quantity"),
+							results.getBigDecimal("TotalItemPrice"));
 					orders.add(order);
 				}
 
@@ -358,28 +358,17 @@ private static FoodJdbcDaoImpl INSTANCE;
 		@Override
 		public void addOrder(Order order) {
 			
-			String insertSqlOrder = 
-					//"INSERT INTO OrderTbl (CustomerName, Address, ContactNumber, Status, Total) VALUES ( ?, ?, ?, ?, ?) ";
-					"INSERT INTO OrderTbl (CustomerName, Address, ContactNumber, Status, Total) VALUES ( ?, ?, ?, ?, ?)";
-					//"INSERT INTO FoodItemTbl (FoodItemName, UnitPrice) VALUES (?, ?)";
+			String insertSqlOrder = "INSERT INTO OrderTbl (CustomerName, Address, ContactNumber, Status, Total) VALUES (?, ?, ?, ?, ?)";
+
 			try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(insertSqlOrder)) {
 
-//				ps.setString(1, order.getFoodItemName());
-//				ps.setBigDecimal(2, order.getUnitPrice());
-//				ps.setString(3, order.getCustomerName());
-//				ps.setString(4, order.getAddress());
-//				ps.setString(5, order.getContactNumber());
-//				ps.setString(6, order.getStatus());
-//				ps.setBigDecimal(7, order.getTotal());
-//				ps.executeUpdate();
-
-				
 				ps.setString(1, order.getCustomerName());
 				ps.setString(2, order.getAddress());
 				ps.setString(3, order.getContactNumber());
 				ps.setString(4, order.getStatus());
 				ps.setBigDecimal(5, order.getTotal());
 				ps.executeUpdate();
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
@@ -388,7 +377,7 @@ private static FoodJdbcDaoImpl INSTANCE;
 
 		@Override
 		public void updateOrder(Order order) {
-			String updateSqlOrder = "UPDATE OrderTbl SET CustomerName = ?, Address = ?, ContactNumber = ? Status = ?, Total = ? WHERE id = ?";
+			String updateSqlOrder = "UPDATE OrderTbl SET CustomerName = ?, Address = ?, ContactNumber = ?, Status = ?, Total = ? WHERE id = ?";
 
 			try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(updateSqlOrder)) {
 
