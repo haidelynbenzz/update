@@ -29,10 +29,6 @@ public class OrderItemServiceImpl implements OrderItemService {
 		return orderItemDao.findByOrderItem(OrderItemName);
 	}
 	
-	public List<OrderItem> findOrderItemData(){
-		return orderItemDao.findOrderItemData();
-	}
-	
 	@Override
 	public void addOrderItem(OrderItem orderItem) {
 		if (validate(orderItem)) {

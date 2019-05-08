@@ -18,15 +18,14 @@ class App extends Component {
       <HashRouter>
         <div className="App">
           <header className="App-header">
-            <img src={image} alt="image" className="img" />
+            <img src={image} className="img" alt="description"/>
             <p>Hi! Admin</p>
-            <img src={image2} alt="image" className="profile" />
+            <img src={image2} className="profile" alt="desc"/>
             <div className="logo">
               <div className="branch"></div>
               <span>FasterFood ®</span>
             </div>
           </header>
-          <body>
             <div className="side-nav">
 
               <nav>
@@ -79,7 +78,6 @@ class App extends Component {
               </nav>
 
             </div>
-          </body>
 
           <footer>
             <h5>

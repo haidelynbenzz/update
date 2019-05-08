@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import '../css/updateOrders.css';
 import axios from 'axios';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input, Table } from 'reactstrap';
-
-import gallery from '../img/catering.png';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input} from 'reactstrap';
 
 class UpdateOrders extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             Orders: [],
@@ -18,6 +16,8 @@ class UpdateOrders extends Component {
                 address: '',
                 contactNumber: '',
                 status: '',
+
+                foodItemName: '',
             },
             editOrderItemData: false,
         };
@@ -80,6 +80,25 @@ class UpdateOrders extends Component {
     //     });
     // }
 
+    //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND NUMBERS
+    alpha(e) {
+        const regex = new RegExp("^[a-z A-Z]+$");
+        const key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (!regex.test(key)) {
+            e.preventDefault();
+            return false;
+        }
+    }
+    //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND LETTERS
+    number(e) {
+        const regex = new RegExp("^[1-9-]+$");
+        const key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (!regex.test(key)) {
+            e.preventDefault();
+            return false;
+        }
+    }
+
     render() {
         return (
             <div>
@@ -117,7 +136,7 @@ class UpdateOrders extends Component {
                                                     {Order.foodItemName}<br />
                                                     Price: {Order.unitPrice}<br />
                                                     Qty: {Order.quantity}<br />
-                                                    TOTAL
+                                                    TOTAL {this.props.quantity * this.props.foodItemName}
                                             </td>
 
                                                 <td className="add-food-cell">{Order.status}</td>
@@ -136,7 +155,7 @@ class UpdateOrders extends Component {
                                 <ModalBody>
                                     <FormGroup>
                                         <Label for="customerName">Customer Name</Label>
-                                        <Input id="customerName" value={this.state.editOrderItemData.customerName} onChange={(e) => {
+                                        <Input id="customerName" onKeyPress={e => this.alpha(e)} value={this.state.editOrderItemData.customerName} onChange={(e) => {
                                             let { editOrderItemData } = this.state;
 
                                             editOrderItemData.customerName = e.target.value;
@@ -146,7 +165,7 @@ class UpdateOrders extends Component {
                                     </FormGroup>
                                     <FormGroup>
                                         <Label for="address">Address</Label>
-                                        <Input id="address" value={this.state.editOrderItemData.address} onChange={(e) => {
+                                        <Input id="address" onKeyPress={e => this.alpha(e)} value={this.state.editOrderItemData.address} onChange={(e) => {
                                             let { editOrderItemData } = this.state;
 
                                             editOrderItemData.address = e.target.value;
@@ -156,16 +175,13 @@ class UpdateOrders extends Component {
                                     </FormGroup>
                                     <FormGroup>
                                         <Label for="contactNumber">Contact Name</Label>
-                                        <Input id="contactNumber" value={this.state.editOrderItemData.contactNumber} onChange={(e) => {
+                                        <Input id="contactNumber" onKeyPress={e => this.number(e)} value={this.state.editOrderItemData.contactNumber} onChange={(e) => {
                                             let { editOrderItemData } = this.state;
 
                                             editOrderItemData.contactNumber = e.target.value;
 
                                             this.setState({ editOrderItemData });
                                         }} />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label>Update</Label>
                                     </FormGroup>
                                     <FormGroup>
                                         <Label for="status">Status</Label>
@@ -176,7 +192,7 @@ class UpdateOrders extends Component {
 
                                             this.setState({ editOrderItemData });
                                         }} >
-                                            <option disabled selected>Choose</option>
+                                            <option defaultValue disabled>Choose</option>
                                             <option>Recieved</option>
                                             <option>Kitchen</option>
                                             <option>In Transit</option>

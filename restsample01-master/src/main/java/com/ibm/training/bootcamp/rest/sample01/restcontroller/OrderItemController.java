@@ -32,33 +32,6 @@ public class OrderItemController {
 	public OrderItemController() {
 		this.orderItemService = new OrderItemServiceImpl();
 	}
-
-	@GET
-	@Path("/orderItems")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<OrderItem> getOrderItem(
-			@QueryParam("Quantity") BigDecimal Quantity, 
-			@QueryParam("OrderItemName") String OrderItemName,
-			@QueryParam("TotalItemPrice") BigDecimal TotalItemPrice) {
-
-		try {
-			List<OrderItem> orderItems = null;
-			
-			if (StringUtils.isBlank(OrderItemName)) {
-				orderItems = orderItemService.findOrderItemData();
-				
-				System.out.println("sad");
-			} else {
-				orderItems = orderItemService.findByOrderItem(OrderItemName);
-			}
-						
-			return orderItems;
-			
-		} catch (Exception e) {
-			throw new WebApplicationException(e);
-		}
-
-	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

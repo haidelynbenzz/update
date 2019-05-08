@@ -15,7 +15,7 @@ class Home extends Component {
                         Welcome Admin!!! 
 			        </div>
                     <div className="container">
-                                <img src={gallery} className="gallery" />
+                                <img src={gallery} className="gallery" alt="description"/>
                     </div>
 
                    

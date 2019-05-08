@@ -11,7 +11,9 @@ class Create extends Component {
         this.state = {
             FoodItems: [],
             foodItemName: '',
+            getUnitPrice: {
             unitPrice: '',
+            },
             quantity: '',
             orderItemName: '',
             total: 0,
@@ -39,6 +41,12 @@ class Create extends Component {
     }
 
     handleChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    handleChangeTotal = e => {
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -90,21 +98,105 @@ class Create extends Component {
 
     }
 
-    getTotal(){
-        //this.FoodItems.unitPrice * this.state.quantity
-        this.state.FoodItems.map((FoodItem) => {
-            return (
-                FoodItem.unitPrice * this.state.quantity
-            )
-        })
-        
+    //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND NUMBERS
+    alpha(e) {
+        const regex = new RegExp("^[a-z A-Z]+$");
+        const key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (!regex.test(key)) {
+            e.preventDefault();
+            return false;
+        }
     }
+    //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND LETTERS
+    number(e) {
+        const regex = new RegExp("^[1-9.]+$");
+        const key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (!regex.test(key)) {
+            e.preventDefault();
+            return false;
+        }
+    }
+
+    // filterData(filter){
+    //     const data = FoodItems.slice();
+    //     return filterBy(data, filter);
+    // }
+
+    // getTotal() {
+    //     let totalPrice = 0;
+    //     for (let i = 0; i<this.state.FoodItems.length; i++){
+    //         totalPrice += this.state.FoodItems[i].unitPrice;
+    //     }
+    //     return totalPrice;
+    // }
+
+    // getTotal (e){
+    //     // this.state.FoodItems.map((FoodItem) => {
+    //     //     return(FoodItem.unitPrice * this.state.quantity)
+    //     // })
+
+    //     this.state.FoodItems.map((FoodItem) => {
+    //         return (
+    //             this.state.quantity * FoodItem.unitPrice
+    //         )
+    //     })
+
+    // }
+
 
     render() {
 
         var shown = {
             display: this.state.isHidden ? "block" : "none"
         };
+
+        let FoodList = this.state.FoodItems.map(FoodItem =>
+            <option> {FoodItem.foodItemName} (Php: {FoodItem.unitPrice})</option>
+        )
+
+        let List = this.state.FoodItems.map(FoodItem =>
+            <option> {FoodItem.unitPrice}</option>
+        )
+
+        // let Total = this.state.FoodItems.map(Food =>
+        //     <td key={Food.unitPrice}>{Food.unitPrice*this.state.quantity}</td>
+        // )
+
+
+        // console.log("List");
+        // console.log(List);
+
+        // let price = this.state.unitPrice*this.state.quantity ;
+        
+        // console.log(""+price);
+
+        //console.log(getTotal);
+        
+        //let Total = this.state.quantity
+        //let Total = this.state.quantity * FoodItem.unitPrice
+
+        // const updateItemPrice = (unitPrice, quantity) => dispatch => {
+        //     const result = unitPrice * quantity;
+        // }
+
+        // const data = this.state.FoodItems.reduce((unitPrice, quantity) => {
+        //     return unitPrice.concat(quantity);
+        // }, []);
+
+        // console.log(data);
+
+        // const getTotal = this.state.FoodItems.reduce(function(total, FoodItem){
+        //     return total + FoodItem;
+        // },0);
+        // console.log(getTotal);
+
+        // this.state.FoodItems.map((FoodItem) => {
+        //     return (
+        //         <td key={FoodItem.unitPrice}>{this.state.quantity * FoodItem.unitPrice}</td>
+        //     )
+        // })
+
+
         return (
 
             <div>
@@ -115,12 +207,12 @@ class Create extends Component {
                         <div className="widget">
                             <div className="title">Create Order</div>
                             <form onSubmit={this.handleSubmit}>
-                                <input className="i" name="customerName" placeholder="Customer Name" onChange={this.handleChange} />
-                                <input className="i" name="address" placeholder="Address" onChange={this.handleChange} />
-                                <input className="i" name="contactNumber" placeholder="Contact Number" onChange={this.handleChange} />
+                                <input className="i" name="customerName" placeholder="Customer Name" onKeyPress={e => this.alpha(e)} onChange={this.handleChange} />
+                                <input className="i" name="address" placeholder="Address" onKeyPress={e => this.alpha(e)} onChange={this.handleChange} />
+                                <input className="i" name="contactNumber" placeholder="Contact Number" onKeyPress={e => this.number(e)} onChange={this.handleChange} />
                                 <input className="i" name="orderItemName" placeholder="e.g. Order#" onChange={this.handleChange} />
                                 <select className="i" name="status" id="status" onChange={this.handleChange}>
-                                    <option disabled selected>Choose</option>
+                                    <option defaultValue disabled>Choose</option>
                                     <option>Recieved</option>
                                     <option>Kitchen</option>
                                     <option>In Transit</option>
@@ -132,40 +224,53 @@ class Create extends Component {
                                     <Table striped bordered hover>
                                         <thead>
                                             <tr>
-                                                <th>Food Name</th>
-                                                <th>Quantity</th>
+                                                <th>QUANTITY</th>
+                                                <th>MENU</th>
+                                                <th>ORDER HERE</th>
                                                 <th>MODIFY</th>
                                             </tr>
                                         </thead>
-                                        <td><Input type="number" min="1" max="20" name="quantity" onChange={this.handleChange}></Input></td>
-                                        <td><Input type="select" name="foodItemName"
-                                            onChange={this.handleChange}>
-                                            {this.state.FoodItems.map((FoodItem) => {
-                                                return (
-                                                    <option>{FoodItem.foodItemName} (Php: {FoodItem.unitPrice})</option>
-                                                )
-                                            })
-                                            }</Input></td>
-                                        <td><Button color="primary" onSubmit={this.handleSubmit}>ADD</Button></td>
+                                        <tbody>
+                                            <tr>
+                                                <td><Input type="number" min="1" max="20" name="quantity" onKeyPress={e => this.number(e)} onChange={this.handleChange}></Input></td>
+                                                <td><Input type="select">{FoodList}</Input></td>
+                                                <td><Input type="select" name="foodItemName"
+                                                    onChange={this.handleChangeTotal}>{List}
+                                                    {/* {this.state.FoodItems.map((FoodItem, index) => {
+                                                        return (
+                                                            <option key={index}>{FoodItem.foodItemName} (Php: {FoodItem.unitPrice})</option>
+                                                        )
+                                                    })
+                                                    } */}
+                                                </Input></td>
+                                                <td><Button color="primary" onSubmit={this.handleSubmit}>ADD</Button></td>
+                                            </tr>
+                                        </tbody>
                                     </Table>
                                     <div className="TableForDisplayTotal">
                                         <Table striped bordered hover>
                                             <thead>
-                                                <th>Quantity</th>
-                                                <th>Ordered Items</th>
-                                                <th>Total Price</th>
+                                                <tr>
+                                                    <th>Quantity</th>
+                                                    <th>Ordered Items</th>
+                                                    <th>Total Price</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>{this.state.quantity}</td>
                                                     <td>{this.state.foodItemName}</td>
-                                                    {/* {this.state.FoodItems.map((FoodItem) => {
-                                                        return (
-                                                            <td key={FoodItem.id}>{this.state.quantity * FoodItem.unitPrice}</td>
-                                                        )
-                                                    })
+                                                    {/* {
+                                                        this.state.FoodItems.map((FoodItem) => {
+                                                            return (
+                                                                <td key={FoodItem.unitPrice}>{this.state.quantity * FoodItem.unitPrice}</td>
+                                                            )
+                                                        })
                                                     } */}
-                                                    <td>{this.getTotal()}</td>
+                                                    {/* <td>{}</td> */}
+                                                    {/* <td>{this.getTotal()}</td> */}
+                                                    <td>{this.state.quantity * this.state.foodItemName}</td>
+                                                    {/* <td>{this.getTotal()}</td> */}
                                                 </tr>
                                             </tbody>
                                         </Table>

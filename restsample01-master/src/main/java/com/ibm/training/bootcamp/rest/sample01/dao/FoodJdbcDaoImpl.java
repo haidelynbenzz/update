@@ -570,42 +570,4 @@ private static FoodJdbcDaoImpl INSTANCE;
 			}
 		}
 		
-		@Override
-		public List<OrderItem> findOrderItemData() {
-			List<OrderItem> orderItems = new ArrayList<>();
-
-			String inner = 
-					"SELECT f.id, f.unitPrice , o.CustomerName, oItem.id, oItem.Quantity, oItem.orderItemName, oItem.TotalItemPrice  "
-					+ "FROM FoodItemTbl f "
-					+ "INNER JOIN OrderTbl o "
-					+ "ON f.id = o.id "
-					+ "INNER JOIN OrderItemTbl oItem "
-					+ "ON o.id = oItem.id";
-			
-			try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(inner)) {
-
-				
-				ResultSet results = ps.executeQuery();
-
-				while (results.next()) {
-					
-							int fid = results.getInt("id");
-							int oid = results.getInt("id");
-							String uprice = results.getString("unitPrice");
-							String custName = results.getString("CustomerName");
-							String oItemName = results.getString("orderItemName");
-							String qty = results.getString("Quantity");
-							String total = results.getString("TotalItemPrice");
-							System.out.println(fid+" "+oid+" "+uprice+" "+custName+" "+oItemName+" "+qty+" "+total);
-				
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-
-			System.out.println();
-			return orderItems;
-		}
 }

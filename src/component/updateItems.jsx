@@ -88,6 +88,26 @@ class UpdateItems extends Component {
                 this.setState({ FoodItems });
             })
     }
+
+
+    //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND NUMBERS
+    alpha(e) {
+        const regex = new RegExp("^[a-z A-Z]+$");
+        const key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (!regex.test(key)) {
+            e.preventDefault();
+            return false;
+        }
+    }
+    //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND LETTERS
+    number(e) {
+        const regex = new RegExp("^[1-9.]+$");
+        const key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (!regex.test(key)) {
+            e.preventDefault();
+            return false;
+        }
+    }
     render() {
 
 
@@ -131,7 +151,7 @@ class UpdateItems extends Component {
                             <ModalBody>
                                 <FormGroup>
                                     <Label for="foodItemName">foodItemName</Label>
-                                    <Input id="foodItemName" value={this.state.editFoodData.foodItemName} onChange={(e) => {
+                                    <Input id="foodItemName" value={this.state.editFoodData.foodItemName} onKeyPress={e => this.alpha(e)} onChange={(e) => {
                                         let { editFoodData } = this.state;
 
                                         editFoodData.foodItemName = e.target.value;
@@ -141,7 +161,7 @@ class UpdateItems extends Component {
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="unitPrice">Price</Label>
-                                    <Input id="unitPrice" value={this.state.editFoodData.unitPrice} onChange={(e) => {
+                                    <Input id="unitPrice" value={this.state.editFoodData.unitPrice} onKeyPress={e => this.number(e)} onChange={(e) => {
                                         let { editFoodData } = this.state;
 
                                         editFoodData.unitPrice = e.target.value;
@@ -158,7 +178,7 @@ class UpdateItems extends Component {
 
                                         this.setState({ editFoodData });
                                     }} >
-                                    <option disabled selected>Choose</option>
+                                    <option defaultValue disabled>Choose</option>
                                     <option>Full Inventory</option>
                                     <option>Limited Stock</option>
                                     <option>Out of Stock</option>

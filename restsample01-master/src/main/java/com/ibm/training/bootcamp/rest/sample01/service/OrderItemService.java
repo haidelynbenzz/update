@@ -13,7 +13,7 @@ public interface OrderItemService {
 	
 	public List<OrderItem> findByOrderItem(String OrderItemName);
 	
-	public List<OrderItem> findOrderItemData();
+	//public List<OrderItem> findOrderItemData();
 	
 	public void addOrderItem(OrderItem orderItem);
 	
