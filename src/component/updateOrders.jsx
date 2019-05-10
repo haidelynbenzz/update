@@ -24,6 +24,7 @@ class UpdateOrders extends Component {
 
     }
 
+    //GET THE DATA FROM ORDERTBL
     componentDidMount() {
         axios.get('http://localhost:8080/restsample01/rest/AddOrder')
             .then(res => {
@@ -32,6 +33,7 @@ class UpdateOrders extends Component {
             })
     }
 
+    //UPDATE IT'S CURRENT DATA
     updateOrderItem() {
         let { customerName, address, contactNumber, status } = this.state.editOrderItemData;
 
@@ -73,12 +75,6 @@ class UpdateOrders extends Component {
             openSelectOrderModal: !this.state.openSelectOrderModal
         });
     }
-
-    // toggleSelectOrderItems() {
-    //     this.setState({
-    //         openSelectOrderItemModal: !this.state.openSelectOrderItemModal
-    //     });
-    // }
 
     //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND NUMBERS
     alpha(e) {
@@ -131,12 +127,10 @@ class UpdateOrders extends Component {
                                                 <td className="add-food-cell">{Order.address}</td>
                                                 <td className="add-food-cell">{Order.contactNumber}</td>
                                                 <td className="add-food-cell">
-                                                    {/* <Button color="outline-success" onClick={this.toggleSelectOrderItems.bind(this)}>UPDATE ORDER LIST</Button> */}
-
                                                     {Order.foodItemName}<br />
                                                     Price: {Order.unitPrice}<br />
                                                     Qty: {Order.quantity}<br />
-                                                    TOTAL {this.props.quantity * this.props.foodItemName}
+                                                    
                                             </td>
 
                                                 <td className="add-food-cell">{Order.status}</td>
@@ -206,18 +200,6 @@ class UpdateOrders extends Component {
                                     <Button color="secondary" onClick={this.toggleSelectOrder.bind(this)}>Cancel</Button>
                                 </ModalFooter>
                             </Modal>
-
-                            {/* FOR ORDER ITEM EDIT MODAL */}
-                            {/* <Modal isOpen={this.state.openSelectOrderItemModal} toggle={this.toggleSelectOrderItems.bind(this)}>
-                                <ModalHeader toggle={this.toggleSelectOrderItems.bind(this)}>EDIT SELECTED ORDER ITEMS</ModalHeader>
-                                <ModalBody>
-                                    
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button color="primary" >UPDATE</Button>{' '}
-                                    <Button color="secondary" onClick={this.toggleSelectOrderItems.bind(this)}>Cancel</Button>
-                                </ModalFooter>
-                            </Modal> */}
                         </table>
                     </div>
                 </div>

@@ -23,7 +23,7 @@ class UpdateItems extends Component {
 
     }
 
-    //GET THE CURRENT DATA FROM REST
+    //GET THE CURRENT DATA FROM FOODITEMTBL
     componentDidMount() {
         axios.get('http://localhost:8080/restsample01/rest/AddFoodItem')
             .then(res => {
@@ -37,12 +37,14 @@ class UpdateItems extends Component {
         this._refreshFoods();
     }
 
+    //TOGGLE FOR MODAL
     toggleEditFoodModal() {
         this.setState({
             editFoodModal: !this.state.editFoodModal
         });
     }
 
+    //UPDATE IT'S CURRENT DATA
     updateFood() {
         let { foodItemName, unitPrice, inStock } = this.state.editFoodData;
 
@@ -101,7 +103,7 @@ class UpdateItems extends Component {
     }
     //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND LETTERS
     number(e) {
-        const regex = new RegExp("^[1-9.]+$");
+        const regex = new RegExp("^[0-9.]+$");
         const key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
         if (!regex.test(key)) {
             e.preventDefault();

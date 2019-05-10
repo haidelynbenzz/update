@@ -6,7 +6,7 @@ public class Order {
 	
 	
 
-	//ORDERTBL FIELDS
+	//ORDER FIELDS
 	Long id;
 	private String FoodItemName;
 	private BigDecimal UnitPrice;
@@ -23,7 +23,7 @@ public class Order {
 		
 	}
 	
-	//ORDERTBL METHOD
+	//constructor of the Order Class w/ it's parameter
 	public Order(String FoodItemName, BigDecimal UnitPrice, String CustomerName, String Address, String ContactNumber, String Status, BigDecimal Total, String OrderItemName, BigDecimal Quantity, BigDecimal TotalItemPrice) {
 		this(null, FoodItemName, UnitPrice, CustomerName, Address, ContactNumber, Status, Total, OrderItemName, Quantity, TotalItemPrice);
 	}
@@ -45,7 +45,8 @@ public class Order {
 
 
 
-	//ORDERTBL GETTERS AND SETTERS
+	//ORDER GETTERS AND SETTERS
+	//
 	
 	public Long getId() {
 		return id;

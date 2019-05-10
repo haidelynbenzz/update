@@ -11,13 +11,13 @@ public class Food {
 		private String InStock;
 		
 
-		
+		//NO-ARGUMENT CONSTRUCT WHICH 
 		public Food() {
 			
 		}
 		
 		
-		//FOODITEMTBL METHOD
+		//FOODITEMTBL CONSTRUCTOR 
 		public Food(String FoodItemName, BigDecimal UnitPrice, String InStock) {
 			this(null, FoodItemName, UnitPrice, InStock);
 		}

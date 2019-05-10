@@ -9,6 +9,7 @@ import com.ibm.training.bootcamp.rest.sample01.dao.OrderDao;
 //import com.ibm.training.bootcamp.rest.sample01.dao.UserHashMapDaoImpl;
 import com.ibm.training.bootcamp.rest.sample01.domain.Order;
 
+//It implements the properties and behaviors of OrderService Interface
 public class OrderServiceImpl implements OrderService{
 	
 	OrderDao orderDao;
@@ -23,11 +24,11 @@ public class OrderServiceImpl implements OrderService{
 	public List<Order> findAllOrder(){
 		return orderDao.findAllOrder();
 	}
-	
+	@Override
 	public Order findOrder(Long id) {
 		return orderDao.findOrder(id);
 	}
-	
+	@Override
 	public List<Order> findByOrder(String CustomerName){
 		return orderDao.findByOrder(CustomerName);
 	}

@@ -26,6 +26,7 @@ class Create extends Component {
 
     }
 
+    //GET THE DATA FROM FOODITEMTBL
     componentDidMount() {
         axios.get('http://localhost:8080/restsample01/rest/AddFoodItem')
             .then(res => {
@@ -34,12 +35,14 @@ class Create extends Component {
             })
     }
 
+    //WHEN CLICK "ORDER NOW", IT WILL RUN THIS FUNTION
     toggleHidden() {
         this.setState({
             isHidden: !this.state.isHidden
         })
     }
 
+    //
     handleChange = e => {
         this.setState({
             [e.target.name]: e.target.value
@@ -80,17 +83,20 @@ class Create extends Component {
         console.log(OrderItem);
         console.log(AddFoodItem);
 
+        //FOR FOODITEMTBL
         axios.post('http://localhost:8080/restsample01/rest/AddFoodItem', AddFoodItem)
             .then(res => {
                 console.log(res);
                 //console.log(res.data);
             })
 
+        //FOR ORDERITEMTBL
         axios.post('http://localhost:8080/restsample01/rest/OrderItem', OrderItem)
             .then(res => {
                 console.log(res);
             })
 
+        //FOR ORDERTBL
         axios.post('http://localhost:8080/restsample01/rest/AddOrder', AddOrder)
             .then(res => {
                 console.log(res);
@@ -109,93 +115,26 @@ class Create extends Component {
     }
     //RESTRICT USER FROM ENTERING SPECIAL CHARACTERS AND LETTERS
     number(e) {
-        const regex = new RegExp("^[1-9.]+$");
+        const regex = new RegExp("^[0-9.]+$");
         const key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
         if (!regex.test(key)) {
             e.preventDefault();
             return false;
         }
     }
-
-    // filterData(filter){
-    //     const data = FoodItems.slice();
-    //     return filterBy(data, filter);
-    // }
-
-    // getTotal() {
-    //     let totalPrice = 0;
-    //     for (let i = 0; i<this.state.FoodItems.length; i++){
-    //         totalPrice += this.state.FoodItems[i].unitPrice;
-    //     }
-    //     return totalPrice;
-    // }
-
-    // getTotal (e){
-    //     // this.state.FoodItems.map((FoodItem) => {
-    //     //     return(FoodItem.unitPrice * this.state.quantity)
-    //     // })
-
-    //     this.state.FoodItems.map((FoodItem) => {
-    //         return (
-    //             this.state.quantity * FoodItem.unitPrice
-    //         )
-    //     })
-
-    // }
-
-
     render() {
 
         var shown = {
             display: this.state.isHidden ? "block" : "none"
         };
 
-        let FoodList = this.state.FoodItems.map(FoodItem =>
+        let FoodList = this.state.FoodItems.map(FoodItem=>
             <option> {FoodItem.foodItemName} (Php: {FoodItem.unitPrice})</option>
         )
 
         let List = this.state.FoodItems.map(FoodItem =>
             <option> {FoodItem.unitPrice}</option>
         )
-
-        // let Total = this.state.FoodItems.map(Food =>
-        //     <td key={Food.unitPrice}>{Food.unitPrice*this.state.quantity}</td>
-        // )
-
-
-        // console.log("List");
-        // console.log(List);
-
-        // let price = this.state.unitPrice*this.state.quantity ;
-        
-        // console.log(""+price);
-
-        //console.log(getTotal);
-        
-        //let Total = this.state.quantity
-        //let Total = this.state.quantity * FoodItem.unitPrice
-
-        // const updateItemPrice = (unitPrice, quantity) => dispatch => {
-        //     const result = unitPrice * quantity;
-        // }
-
-        // const data = this.state.FoodItems.reduce((unitPrice, quantity) => {
-        //     return unitPrice.concat(quantity);
-        // }, []);
-
-        // console.log(data);
-
-        // const getTotal = this.state.FoodItems.reduce(function(total, FoodItem){
-        //     return total + FoodItem;
-        // },0);
-        // console.log(getTotal);
-
-        // this.state.FoodItems.map((FoodItem) => {
-        //     return (
-        //         <td key={FoodItem.unitPrice}>{this.state.quantity * FoodItem.unitPrice}</td>
-        //     )
-        // })
-
 
         return (
 
@@ -236,12 +175,6 @@ class Create extends Component {
                                                 <td><Input type="select">{FoodList}</Input></td>
                                                 <td><Input type="select" name="foodItemName"
                                                     onChange={this.handleChangeTotal}>{List}
-                                                    {/* {this.state.FoodItems.map((FoodItem, index) => {
-                                                        return (
-                                                            <option key={index}>{FoodItem.foodItemName} (Php: {FoodItem.unitPrice})</option>
-                                                        )
-                                                    })
-                                                    } */}
                                                 </Input></td>
                                                 <td><Button color="primary" onSubmit={this.handleSubmit}>ADD</Button></td>
                                             </tr>
@@ -260,17 +193,7 @@ class Create extends Component {
                                                 <tr>
                                                     <td>{this.state.quantity}</td>
                                                     <td>{this.state.foodItemName}</td>
-                                                    {/* {
-                                                        this.state.FoodItems.map((FoodItem) => {
-                                                            return (
-                                                                <td key={FoodItem.unitPrice}>{this.state.quantity * FoodItem.unitPrice}</td>
-                                                            )
-                                                        })
-                                                    } */}
-                                                    {/* <td>{}</td> */}
-                                                    {/* <td>{this.getTotal()}</td> */}
                                                     <td>{this.state.quantity * this.state.foodItemName}</td>
-                                                    {/* <td>{this.getTotal()}</td> */}
                                                 </tr>
                                             </tbody>
                                         </Table>

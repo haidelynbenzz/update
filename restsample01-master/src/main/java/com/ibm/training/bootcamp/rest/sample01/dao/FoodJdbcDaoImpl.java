@@ -16,6 +16,8 @@ import com.ibm.training.bootcamp.rest.sample01.domain.Food;
 import com.ibm.training.bootcamp.rest.sample01.domain.Order;
 import com.ibm.training.bootcamp.rest.sample01.domain.OrderItem;
 
+//implements FoodDao, OrderDao, OrderItemDao 
+//INHERITANCE
 public class FoodJdbcDaoImpl implements FoodDao, OrderDao, OrderItemDao {
 
 	
